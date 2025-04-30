@@ -1,0 +1,35 @@
+{% extends 'jurc/home.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Search Papers by Author</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+      <input type="text" name="author_name" class="form-control" 
+        placeholder="Enter author name">
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+  </form>
+
+  {% if papers %}
+  <div class="row">
+    {% for paper in papers %}
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ paper.title }}</h5>
+          <p class="card-text">
+            <strong>Authors:</strong> 
+            {{ paper.authors|join:", " }}
+          </p>
+          <a href="{{ paper.url }}" class="btn btn-sm btn-outline-primary" 
+                       target="_blank">View Paper</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
