@@ -2,15 +2,35 @@
 
 {% block content %}
 <div class="container">
-  <h2>Faculty Directory</h2>
-  <div class="list-group">
-    {% for teacher in teachers %}
-    <a href="{% url 'teacher_detail' teacher.pk %}" 
-      class="list-group-item list-group-item-action">
-      <h5>{{ teacher.name }}</h5>
-      <p class="mb-0 text-muted">{{ teacher.department }}</p>
-    </a>
-    {% endfor %}
+  <div class="card mt-4">
+    <div class="card-body">
+      <h1>{{ teacher.name }}</h1>
+      <p class="lead">{{ teacher.department }}</p>
+
+      <h3>Latest Research Papers</h3>
+      <div class="row">
+        {% for paper in papers %}
+          <div class="col-md-6 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ paper.title }}</h5>
+                <p class="card-text">
+                  <strong>Authors:</strong> 
+                  {{ paper.authors|join:", " }}
+                </p>
+                <a href="{{ paper.url }}" class="btn btn-sm btn-primary" target="_blank">View Paper</a>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="col-12">
+            <div class="alert alert-warning">
+              No recent papers found for {{ teacher.name }}
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+    </div>
   </div>
 </div>
 {% endblock %}
