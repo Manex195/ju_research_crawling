@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 import requests
+from .models import Teacher
 
 def author_search(request):
   papers = []
@@ -23,3 +24,26 @@ def author_search(request):
 def teacher_list(request):
   teachers = Teacher.objects.all()
   return render(request, 'jurc/teacher_list.html', {'teachers': teachers})
+
+def teacher_detail(request, pk):
+  teacher = get_object_or_404(Teacher, pk=pk)
+    
+  url = "https://api.semanticscholar.org/graph/v1/paper/search"
+  params = {
+    "query": f'au:"{teacher.api_author_name}"',
+    "fields": "title,authors,year,url,abstract",
+    "limit": 10
+  }
+    
+  papers = []
+  try:
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+      papers = response.json().get("data", [])
+  except requests.exceptions.RequestException:
+    papers = []
+
+  return render(request, 'jurc/teacher_details.html', {
+    'teacher': teacher,
+    'papers': papers
+  })
