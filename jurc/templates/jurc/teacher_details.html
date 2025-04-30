@@ -1,0 +1,16 @@
+{% extends 'jurc/home.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Faculty Directory</h2>
+  <div class="list-group">
+    {% for teacher in teachers %}
+    <a href="{% url 'teacher_detail' teacher.pk %}" 
+      class="list-group-item list-group-item-action">
+      <h5>{{ teacher.name }}</h5>
+      <p class="mb-0 text-muted">{{ teacher.department }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

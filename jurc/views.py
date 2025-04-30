@@ -18,3 +18,8 @@ def author_search(request):
       papers = response.json().get("data", [])
     
   return render(request, 'jurc/teacher_search.html', {'papers': papers})
+
+
+def teacher_list(request):
+  teachers = Teacher.objects.all()
+  return render(request, 'jurc/teacher_list.html', {'teachers': teachers})
